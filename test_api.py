@@ -1,7 +1,18 @@
 from fastapi.testclient import TestClient
-from main import app
+from main import app, get_db
+from test_database import TestSessionLocal
+
 
 client = TestClient(app)
+
+def override_get_db():
+    db = TestSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+app.dependency_overrides[get_db] = override_get_db
 
 def test_create_run():
     response = client.post(
