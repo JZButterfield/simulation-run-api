@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, JSON, Enum, DateTime
+from sqlalchemy import Column, Integer, String, Enum, DateTime
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import JSONB
 from database import Base
 
 # Create the simulation run class
@@ -11,9 +12,9 @@ class SimulationRun(Base):
     # Create the simulation name, limited to 100 characters
     name = Column(String(100))
     # Create the parameters, set to JSON database type
-    parameters = Column(JSON)
+    parameters = Column(JSONB)
     # Create the results, set to JSON database type
-    results = Column(JSON)
+    results = Column(JSONB)
     # Create the simulation status value and restrict the options
     status = Column(Enum("queued","running", "complete", "failed", name = "simulation_status"), default="queued")
     # Create the created at information using SQL function for datetime
