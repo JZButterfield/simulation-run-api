@@ -34,3 +34,25 @@ def test_get_runs():
 
     assert response.status_code == 200
     assert len(response.json()) > 0
+
+def test_delete_run():
+    response = client.post(
+    "/runs",
+    json={
+        "name": "delete_test",
+        "parameters": {
+            "speed": 100,
+            "time": 5
+        }
+    }
+    )
+
+    run_id = response.json()["id"]
+
+    response = client.delete(f"/runs/{run_id}")
+
+    assert response.status_code == 200
+
+    response = client.get(f"/runs/{run_id}")
+
+    assert response.status_code == 404

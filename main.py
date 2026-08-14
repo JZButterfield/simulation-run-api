@@ -74,3 +74,18 @@ def update_run(run_id: int, run: SimulationRunUpdate, db=Depends(get_db)):
     db.refresh(result)
 
     return result
+
+@app.delete("/runs/{run_id}")
+def delete_run(run_id: int, db=Depends(get_db)):
+    result = db.get(SimulationRun, run_id)
+
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Run not found."
+        )
+
+    db.delete(result)
+    db.commit()
+
+    return {"message": "Simulation successfully deleted"}
