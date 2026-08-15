@@ -23,10 +23,6 @@ def get_db():
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello World"}
-
 @app.get("/runs/{run_id}")
 def get_run(run_id: int, db=Depends(get_db)):
     result = db.get(SimulationRun, run_id)
