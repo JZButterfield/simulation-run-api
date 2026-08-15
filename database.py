@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Python loads the .env file and its variables
 load_dotenv()
-# Assigns the "DATABASE_URL value from the .env to the variable DATABASE_URL
+# Read the database connection URL from the environment so credentials aren't hard-coded
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Creates the engine using the connection URL

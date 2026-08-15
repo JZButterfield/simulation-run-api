@@ -5,6 +5,7 @@ from test_database import TestSessionLocal
 
 client = TestClient(app)
 
+# Override the Database URL to use the Test Database URL
 def override_get_db():
     db = TestSessionLocal()
     try:
@@ -14,6 +15,7 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
+# Test the api route for creating a simulation run
 def test_create_run():
     response = client.post(
         "/runs",
@@ -29,12 +31,14 @@ def test_create_run():
     assert response.status_code == 200
     assert response.json()["name"] == "test_from_pytest"
 
+# Test the api route for getting all stored simulation runs
 def test_get_runs():
     response = client.get("/runs")
 
     assert response.status_code == 200
     assert len(response.json()) > 0
 
+# Test the api route for deleting a simulation run
 def test_delete_run():
     response = client.post(
     "/runs",
