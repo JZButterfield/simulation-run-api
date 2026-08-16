@@ -60,3 +60,36 @@ def test_delete_run():
     response = client.get(f"/runs/{run_id}")
 
     assert response.status_code == 404
+
+
+# Test the api route for updating a simulation run
+def test_patch_run():
+    response = client.post(
+    "/runs",
+    json={
+        "name": "test_from_pytest",
+        "parameters": {
+            "speed": 100,
+            "time": 5
+        }
+    }
+    )
+
+    assert response.status_code == 200
+
+    response = client.patch(
+        f"/runs/{run_id}",
+        json={
+            "name": "updated_test_from_pytest"
+        }
+    )
+
+    assert response.status_code == 200
+
+    
+    run_id = response.json()["id"]
+    
+    response = client.get(f"/runs/{run_id}")
+
+    assert response.json()["name"] == "updated_test_from_pytest"
+
