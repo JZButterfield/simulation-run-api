@@ -75,7 +75,10 @@ def test_patch_run():
     }
     )
 
+
     assert response.status_code == 200
+
+    run_id = response.json()["id"]
 
     response = client.patch(
         f"/runs/{run_id}",
@@ -87,9 +90,9 @@ def test_patch_run():
     assert response.status_code == 200
 
     
-    run_id = response.json()["id"]
     
     response = client.get(f"/runs/{run_id}")
 
     assert response.json()["name"] == "updated_test_from_pytest"
+    assert response.json()["parameters"] == {"speed": 100, "time": 5}
 
